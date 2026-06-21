@@ -3,3 +3,7 @@
 2. cat /etc/hosts -> to list all hosts
 3. sudo useradd -s /sbin/nologin required-name
 4. grep '^required-name:' /etc/passwd -> to view the access of the user
+
+# Creating an expiring date for a user
+1. sudo useradd -e <date> <user-name>
+2. verify -> sudo chage -l <user-name>
