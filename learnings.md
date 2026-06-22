@@ -7,3 +7,10 @@
 # Creating an expiring date for a user
 1. sudo useradd -e <date> <user-name>
 2. verify -> sudo chage -l <user-name>
+
+# Disable direct SSH root login
+1. ssh username@servername
+2. sudo vi /etc/ssh/sshd_config
+3. Make the change -> PermitRootLogin no
+4. Restart SSH -> sudo systemctl restart sshd
+5. Verify -> grep "^PermitRootLogin" /etc/ssh/sshd_config
