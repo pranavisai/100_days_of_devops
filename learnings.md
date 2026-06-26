@@ -42,3 +42,7 @@
 │ └──────── Hour (0–23)
 └────────── Minute (0–59)
 ```
+
+## Linux SSH key-based authentication to avoid a password for login
+1. ssh-keygen -t rsa -> in the jump host for rsa key creation
+2. ssh-copy-id username@servername
