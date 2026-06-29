@@ -46,3 +46,7 @@
 ## Linux SSH key-based authentication to avoid a password for login
 1. ssh-keygen -t rsa -> in the jump host for rsa key creation
 2. ssh-copy-id username@servername
+
+## Install Ansible using pip3 
+1. sudo pip3 install ansible==4.9.0
+2. ansible --version
