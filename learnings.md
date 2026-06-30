@@ -44,9 +44,19 @@
 ```
 
 ## Linux SSH key-based authentication to avoid a password for login
-1. ssh-keygen -t rsa -> in the jump host for rsa key creation
+1. ssh-keygen -t rsa -> on the jump host for RSA key creation
 2. ssh-copy-id username@servername
 
 ## Install Ansible using pip3 
 1. sudo pip3 install ansible==4.9.0
 2. ansible --version
+
+## Troubleshooting MARIADB
+1. SSH into the MariaDB server
+2. See the error -> sudo journalctl -u mariadb -n 20 --no-pager
+3. Create directory -> sudo mkdir -p /var/lib/mysql
+4. Change the owner and group of the directory to the mysql user, so MariaDB has permission to access it -> sudo chown mysql:mysql /var/lib/mysql
+5. Set the directory permissions: the owner (mysql) gets full access (rwx), while everyone else gets read and execute access (r-x) -> sudo chmod 755 /var/lib/mysql
+6. Initialize MariaDB -> sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+7. Start MariaDB -> sudo systemctl start mariadb
+8. Verify if it's active -> sudo systemctl is-active mariadb
