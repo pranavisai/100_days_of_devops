@@ -60,3 +60,29 @@
 6. Initialize MariaDB -> sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 7. Start MariaDB -> sudo systemctl start mariadb
 8. Verify if it's active -> sudo systemctl is-active mariadb
+
+## Day 10 DevOps Task
+1. SSH into the server
+2. Install zip -> sudo yum install -y zip
+3. Make directory -> sudo mkdir -p /scripts
+4. Permissions -> sudo chown user:user /scripts
+5. Create the script -> vi /scripts/beta_archive.sh
+6. Add the code ->
+```
+#!/bin/bash
+
+zip -r /archives/xfusioncorp_beta.zip /var/www/html/beta
+scp /archives/xfusioncorp_beta.zip natasha@ststor01:/archives/
+```
+7. Make it executable -> chmod +x /scripts/beta_archive.sh
+8. Create the RSA key and add it to the storage server for passwordless access
+```
+ssh-keygen -t rsa
+ssh-copy-id natasha@ststor01
+```
+9. Run the script -> /scripts/beta_archive.sh
+10. Verify ->
+```
+ls -l /archives/xfusioncorp_beta.zip
+ssh natasha@ststor01 "ls -l /archives/xfusioncorp_beta.zip"
+```
