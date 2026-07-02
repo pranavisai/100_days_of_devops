@@ -86,3 +86,15 @@ ssh-copy-id natasha@ststor01
 ls -l /archives/xfusioncorp_beta.zip
 ssh natasha@ststor01 "ls -l /archives/xfusioncorp_beta.zip"
 ```
+## Install Tomcat server and configure it
+1. Copy the .war file into the server -> scp /tmp/ROOT.war banner@stapp03:/tmp/
+2. SSH into the server
+3. Install the Tomcat server -> sudo yum install -y tomcat tomcat-webapps tomcat-admin-webapps
+4. Change the port as needed -> sudo sed -i 's/port="8080"/port="own-port-number"/' /etc/tomcat/server.xml
+5. Check if a ROOT directory already exists -> ls -l /var/lib/tomcat/webapps/
+6. If it exists -> sudo rm -rf /var/lib/tomcat/webapps/ROOT
+7. Copy into the folder path -> sudo cp /tmp/ROOT.war /var/lib/tomcat/webapps/
+8. Access -> sudo chown tomcat:tomcat /var/lib/tomcat/webapps/ROOT.war
+9. Start Tomcat server -> sudo systemctl start tomcat
+10. curl URL -> check if the output gives the needed webpage.
+
