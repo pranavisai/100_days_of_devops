@@ -98,3 +98,30 @@ ssh natasha@ststor01 "ls -l /archives/xfusioncorp_beta.zip"
 9. Start Tomcat server -> sudo systemctl start tomcat
 10. curl URL -> check if the output gives the needed webpage.
 
+## Fixing Apache issue with the port
+1. SSH into the server
+2. Check status -> sudo systemctl status httpd
+3. Check if it is listening on the port needed -> sudo ss -tlnp | grep <port-number>
+4. If the port is busy -> 127.0.0.1:8083 users:(("sendmail"...)) in something else then follow the below steps.
+5. ```
+   sudo systemctl stop sendmail
+   sudo systemctl disable sendmail
+   ```
+6. Start Apache
+   ```
+   sudo systemctl start httpd
+   sudo systemctl enable httpd
+   ```
+7. Check the firewall -> sudo systemctl status iptables
+8. Allow the port -> sudo iptables -I INPUT -p tcp --dport <port-number> -j ACCEPT
+
+| Option | Meaning |
+|--------|---------|
+| `sudo` | Run the command with administrator (root) privileges. |
+| `iptables` | Linux firewall management utility. |
+| `-I INPUT` | **Insert** the rule at the beginning of the **INPUT** chain (incoming traffic). |
+| `-p tcp` | Apply the rule only to the **TCP** protocol. |
+| `--dport 8083` | Match traffic whose **destination port** is **8083**. |
+| `-j ACCEPT` | **Accept** (allow) the matching traffic. |
+
+9. Test from jump-host -> curl http://>server-name>:<port-number>
