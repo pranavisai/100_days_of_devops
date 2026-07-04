@@ -102,7 +102,7 @@ ssh natasha@ststor01 "ls -l /archives/xfusioncorp_beta.zip"
 1. SSH into the server
 2. Check status -> sudo systemctl status httpd
 3. Check if it is listening on the port needed -> sudo ss -tlnp | grep <port-number>
-4. If the port is busy -> 127.0.0.1:8083 users:(("sendmail"...)) in something else then follow the below steps.
+4. If the port is busy -> 127.0.0.1:8083 users:(("sendmail"...)) in something else, then follow the steps below.
 5. ```
    sudo systemctl stop sendmail
    sudo systemctl disable sendmail
@@ -125,3 +125,22 @@ ssh natasha@ststor01 "ls -l /archives/xfusioncorp_beta.zip"
 | `-j ACCEPT` | **Accept** (allow) the matching traffic. |
 
 9. Test from jump-host -> curl http://>server-name>:<port-number>
+
+## Task 13 answer
+1. SSH into any server and find the IP address of the Load Balancer -> getent hosts stlb01
+2. Follow the steps below for all the servers:
+   ```
+   ssh tony@stapp01
+
+   sudo yum install -y iptables iptables-services
+   
+   sudo iptables -I INPUT -p tcp -s <LBR_IP> --dport 6000 -j ACCEPT
+   sudo iptables -A INPUT -p tcp --dport 6000 -j DROP
+   
+   sudo iptables-save | sudo tee /etc/sysconfig/iptables
+   
+   sudo systemctl enable iptables
+   sudo systemctl restart iptables
+   
+   sudo iptables -L -n -> to verify
+   ```
