@@ -144,3 +144,23 @@ ssh natasha@ststor01 "ls -l /archives/xfusioncorp_beta.zip"
    
    sudo iptables -L -n -> to verify
    ```
+## Task 14 answer
+1. Follow the steps
+   ```
+   ssh user@server-name
+
+   sudo systemctl status httpd    #check the Apache service
+
+   sudo ss -tlnp | grep 8082    #check the port and see if another service is running in its place
+
+   #stop and disable the other service
+   sudo systemctl stop sendmail
+   sudo systemctl disable sendmail
+
+   #start and enable apache
+   sudo systemctl start httpd
+   sudo systemctl enable httpd
+
+   #recheck the Apache service
+   sudo systemctl status httpd
+   ```
