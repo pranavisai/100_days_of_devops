@@ -164,3 +164,123 @@ ssh natasha@ststor01 "ls -l /archives/xfusioncorp_beta.zip"
    #recheck the Apache service
    sudo systemctl status httpd
    ```
+## Task 15 Nginx setup
+Prepare **App Server 2** for a new application by:
+
+1. Installing **Nginx**.
+2. Configuring **HTTPS (SSL)** using the provided certificate and key.
+3. Creating a simple web page.
+4. Verifying HTTPS access from the jump host.
+
+---
+
+1. SSH into App Server 2
+2. Install Nginx
+
+```bash
+sudo yum install -y nginx
+```
+3. Create a location for SSL certificates
+
+```bash
+sudo mkdir -p /etc/pki/nginx
+```
+
+### Explanation
+
+- `mkdir` → create directory.
+- `-p` → create parent directories if they don't exist.
+- `/etc/pki/nginx` → a standard location for storing SSL certificates on RHEL/CentOS systems.
+4. Move the certificate and key
+
+```bash
+sudo mv /tmp/nautilus.crt /etc/pki/nginx/
+sudo mv /tmp/nautilus.key /etc/pki/nginx/
+```
+5. Secure the private key. 600 -> only owner read and write access. 
+
+```bash
+sudo chmod 600 /etc/pki/nginx/nautilus.key
+```
+6. Configure SSL
+
+The main `nginx.conf` file already contains:
+
+```nginx
+include /etc/nginx/conf.d/*.conf;
+```
+
+This means **every `.conf` file inside `/etc/nginx/conf.d/` is automatically loaded.**
+
+Instead of editing the main configuration, create a new configuration file.
+
+```bash
+sudo vi /etc/nginx/conf.d/ssl.conf
+```
+
+Add:
+
+```nginx
+server {
+    listen 443 ssl;
+    server_name stapp02;
+
+    ssl_certificate /etc/pki/nginx/nautilus.crt;
+    ssl_certificate_key /etc/pki/nginx/nautilus.key;
+
+    root /usr/share/nginx/html;
+    index index.html;
+}
+```
+7. Create the webpage
+
+```bash
+echo "Welcome!" | sudo tee /usr/share/nginx/html/index.html
+```
+8. Test the configuration
+
+```bash
+sudo nginx -t
+```
+
+Expected output:
+
+```
+syntax is ok
+test is successful
+```
+
+9. Start Nginx
+
+```bash
+sudo systemctl enable --now nginx
+```
+Equivalent to:
+
+```bash
+sudo systemctl enable nginx
+sudo systemctl start nginx
+```
+
+10. Verify locally
+
+```bash
+curl -Ik https://localhost
+```
+
+Expected:
+
+```
+HTTP/1.1 200 OK
+```
+11. Verify from Jump Host
+
+```bash
+curl -Ik https://stapp02/
+```
+
+Expected:
+
+```
+HTTP/1.1 200 OK
+```
