@@ -284,3 +284,86 @@ Expected:
 ```
 HTTP/1.1 200 OK
 ```
+
+## Task 16 Nginx Load Balancer
+
+1. Verify Apache on all App Servers
+
+```bash
+sudo systemctl status httpd
+grep "^Listen" /etc/httpd/conf/httpd.conf
+```
+
+Apache must be **running** and listening on **port 5001**.
+
+---
+
+2. Install Nginx on LBR
+
+```bash
+sudo yum install -y nginx
+```
+
+---
+
+3. Edit `/etc/nginx/nginx.conf`
+
+Inside the `http {}` block, add:
+
+```nginx
+upstream app_servers {
+    server stapp01:5001;
+    server stapp02:5001;
+    server stapp03:5001;
+}
+```
+
+Replace the existing `server { ... }` block with:
+
+```nginx
+server {
+    listen 80;
+    listen [::]:80;
+    server_name _;
+
+    location / {
+        proxy_pass http://app_servers;
+    }
+}
+```
+
+Remove:
+
+- `root`
+- `include /etc/nginx/default.d/*.conf`
+- `error_page`
+- `404/50x location` blocks
+
+---
+4. Test Configuration
+
+```bash
+sudo nginx -t
+```
+
+---
+
+5. Start Nginx
+
+```bash
+sudo systemctl enable --now nginx
+sudo systemctl restart nginx
+```
+
+---
+
+6. Verify
+
+From Jump Host:
+
+```bash
+curl http://stlb01:80
+```
+
+If the application page loads, the load balancer is working.
+
