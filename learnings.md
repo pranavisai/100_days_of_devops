@@ -367,3 +367,53 @@ curl http://stlb01:80
 
 If the application page loads, the load balancer is working.
 
+## Install and Configure PostgreSQL
+# PostgreSQL - Create User and Database (Stratos Lab)
+
+1. SSH to Database Server
+
+2. Switch to the PostgreSQL user
+
+```bash
+sudo su - postgres
+```
+
+3. Open PostgreSQL bash
+
+```bash
+psql
+```
+4. Create the database user
+
+```sql
+CREATE USER <user-name> WITH PASSWORD '<password>';
+```
+5. Create the database
+
+```sql
+CREATE DATABASE <database-name>;
+```
+6. Grant all privileges
+
+```sql
+GRANT ALL PRIVILEGES ON DATABASE <database-name> TO <user-name>;
+```
+7. Verify
+
+List users:
+
+```sql
+\du
+```
+
+List databases:
+
+```sql
+\l
+```
+
+8. Exit
+
+```sql
+\q
+```
