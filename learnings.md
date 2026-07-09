@@ -367,8 +367,7 @@ curl http://stlb01:80
 
 If the application page loads, the load balancer is working.
 
-## Install and Configure PostgreSQL
-# PostgreSQL - Create User and Database (Stratos Lab)
+## Task 17: Install and Configure PostgreSQL
 
 1. SSH to Database Server
 
@@ -417,3 +416,14 @@ List databases:
 ```sql
 \q
 ```
+## Task 18: Install and Configure MariaDB
+1. SSH into the database server
+2. Install MariaDB -> sudo yum install -y mariadb-server
+3. Start and enable MariaDB -> sudo systemctl enable --now mariadb
+4. Bash -> sudo mysql
+5. Create the database -> CREATE DATABASE <database-name>;
+6. CREATE USER 'username'@'localhost' IDENTIFIED BY 'password';
+7. GRANT ALL PRIVILEGES ON <database-name>.* TO 'username'@'localhost';
+8. Reload privileges -> FLUSH PRIVILEGES;
+9. Verify -> SHOW DATABASES;
+SELECT User, Host FROM mysql.user;
