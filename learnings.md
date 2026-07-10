@@ -427,3 +427,29 @@ List databases:
 8. Reload privileges -> FLUSH PRIVILEGES;
 9. Verify -> SHOW DATABASES;
 SELECT User, Host FROM mysql.user;
+
+## Task 19: Install and configure web application
+1. Copy from the jump host to the server
+```
+scp -r /home/thor/ecommerce steve@stapp02:/tmp/
+scp -r /home/thor/apps steve@stapp02:/tmp/
+```
+2. SSH into the server
+3. Install httpd -> sudo yum install -y httpd
+4. Change the Listen port to 3001 and check -> grep "^Listen" /etc/httpd/conf/httpd.conf
+5. Copy from the tmp folder to the respective html/folders
+   ```
+   sudo cp -r /tmp/ecommerce /var/www/html/
+   sudo cp -r /tmp/apps /var/www/html/
+   ```
+6. Set permissions
+```
+sudo chown -R apache:apache /var/www/html/ecommerce
+sudo chown -R apache:apache /var/www/html/apps
+```
+7. Start Apache -> sudo systemctl enable --now httpd
+8. Verify
+```
+curl http://localhost:3001/ecommerce/
+curl http://localhost:3001/apps/
+```
