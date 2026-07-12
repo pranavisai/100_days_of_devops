@@ -453,3 +453,11 @@ sudo chown -R apache:apache /var/www/html/apps
 curl http://localhost:3001/ecommerce/
 curl http://localhost:3001/apps/
 ```
+## Task 20: Configure Nginx + PHP-FPM Using Unix Sock
+https://medium.com/@nigarsalman7/day-20-configure-nginx-php-fpm-using-unix-sock-d2acab726f68
+
+## Task 21: Set Up Git Repository on Storage Server
+1. SSH into the storage server
+2. Install git -> sudo yum install -y git
+3. Make directory -> sudo mkdir -p /opt/official.git
+4. Create bare repository -> sudo git init --bare /opt/official.git
