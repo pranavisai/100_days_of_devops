@@ -461,3 +461,28 @@ https://medium.com/@nigarsalman7/day-20-configure-nginx-php-fpm-using-unix-sock-
 2. Install git -> sudo yum install -y git
 3. Make directory -> sudo mkdir -p /opt/official.git
 4. Create bare repository -> sudo git init --bare /opt/official.git
+
+## Task 22: Clone Git repository
+1. SSH into storage server
+2. Create repository if it doesn't exist -> mkdir -p /usr/src/kodekloudrepos
+3. Clone -> git clone /opt/<repository-name>.git /usr/src/kodekloudrepos/<repository-name>
+4. Verify -> ls -l /usr/src/kodekloudrepos
+5. cd /usr/src/kodekloudrepos/<repository-name>
+6. git status -> check that it is on master
+
+## Task 23: Fork the git repository
+1. Go to the specified UI
+2. Log in with the given credentials
+3. Go to the Home tab to see the repositories.
+4. Go to the required repository and click on the fork on the top right.
+5. Click okay and the repository will be forked.
+
+## Task 24: Create Git branch
+1. SSH into the storage server
+2. Mark the repository as safe -> git config --global --add safe.directory /usr/src/kodekloudrepos/cluster
+3. Check the permissions -> ls -ld /usr/src/kodekloudrepos/cluster/.git
+4. cd into the repository -> /usr/src/kodekloudrepos/cluster
+5. If root, use sudo to do the following steps:
+   1. Check out to master -> sudo git checkout master
+   2. Create branch -> sudo git checkout -b <branch-name>
+   3. Verify that we are on the required branch -> git branch
