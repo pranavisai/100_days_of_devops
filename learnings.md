@@ -486,3 +486,46 @@ https://medium.com/@nigarsalman7/day-20-configure-nginx-php-fpm-using-unix-sock-
    1. Check out to master -> sudo git checkout master
    2. Create branch -> sudo git checkout -b <branch-name>
    3. Verify that we are on the required branch -> git branch
+
+## Day 58: Deploy Grafana on Kubernetes Cluster
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana-deployment-xfusion
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: grafana
+    containers:
+      - name: grafana
+        image: grafana/grafana:latest
+        ports:
+          - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-service
+spec:
+  type: NodePort
+  selector:
+    app: grafana
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+      nodePort: 32000
+```
+2. Run the apply command:
+```
+kubectl apply -f deploy.yaml
+```
+3. Verify:
+```
+kubectl get pods
+kubectl get svc grafana-service
+```
+4. Output: Grafana Login page should be visible.
