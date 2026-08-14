@@ -529,3 +529,30 @@ kubectl get pods
 kubectl get svc grafana-service
 ```
 4. Output: Grafana Login page should be visible.
+
+## Day 59: Troubleshoot Deployment issues in Kubernetes
+1. Run to check the issue:
+   ```
+   kubectl get pods
+   kubectl describe pod <pod-name>
+   ```
+2. Get the ConfigMap and check for the correct name
+   ```
+   kubectl get configmap
+   ```
+3. Edit the deployment
+   ```
+   kubectl edit deployment redis-deployment
+   ```
+4. Change the name (redis-config) instead of redis-conig under volumes:
+      ```
+       volumes:
+         - name: config
+           configMap:
+             name: redis-config
+     ```
+5. Also change the image name from redis:alpin -> redis: alpine
+6. Verify that the deployment is running
+   ```
+   kubectl get pods
+   ```
