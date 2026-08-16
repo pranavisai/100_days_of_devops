@@ -556,3 +556,69 @@ kubectl get svc grafana-service
    ```
    kubectl get pods
    ```
+
+## Day 60: Persistent Volumes in Kubernetes
+```
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-datacenter
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath: 
+    path: /mnt/itadmin
+    
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: 
+  name: pvc-datacenter
+spec:
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+    
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-datacenter
+  labels:
+    app: datacenter
+spec:
+  containers:
+    - name: container-datacenter
+      image: httpd:latest
+      volumeMounts:
+        - name: datacenter-storage
+          mountPath: /usr/local/apache2/htdocs
+  volumes:
+    - name: datacenter-storage
+      persistentVolumeClaim:
+        claimName: pvc-datacenter
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-datacenter
+spec:
+  type: NodePort
+  selector:
+    app: datacenter
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30008
+```
+
