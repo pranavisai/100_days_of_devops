@@ -622,3 +622,37 @@ spec:
       nodePort: 30008
 ```
 
+## Day 61: Init Containers in Kubernetes
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ic-deploy-nautilus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ic-nautilus
+  template:
+    metadata:
+      labels:
+        app: ic-nautilus
+    spec:
+      initContainers:
+        - name: ic-msg-nautilus
+          image: fedora:latest
+          command: ['/bin/bash', '-c', "echo Init Done - Welcome to xFusionCorp Industries > /ic/news"]
+          volumeMounts:
+            - name: ic-volume-nautilus
+              mountPath: /ic
+      containers:
+        - name: ic-main-nautilus
+          image: fedora:latest
+          command: ['/bin/bash', '-c', "while true; do cat /ic/news; sleep 5; done"]
+          volumeMounts:
+            - name: ic-volume-nautilus
+              mountPath: /ic
+      volumes:
+        - name: ic-volume-nautilus
+          emptyDir: {}
+```
