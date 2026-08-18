@@ -656,3 +656,42 @@ spec:
         - name: ic-volume-nautilus
           emptyDir: {}
 ```
+
+## Day 62: Manage Secrets in Kubernetes
+1. Create the generic secret
+```
+kubectl create secret generic official --from-file=/opt/official.txt
+```
+2. Verify
+```
+kubectl get secret official
+kubectl describe secret official
+```
+3. Create the pod file
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secret-nautilus
+spec:
+  containers:
+    - name: secret-container-nautilus
+      image: debian:latest
+      command:
+        - sleep
+        - "3600"
+      volumeMounts:
+        - name: secret-volume
+          mountPath: /opt/demo
+  volumes:
+    - name: secret-volume
+      secret:
+        secretName: official
+```
+4. Apply and verify
+```
+kubectl apply -f pod.yaml
+kubectl get pod secret-nautilus
+kubectl exec -it secret-nautilus -c secret-container-nautilus -- ls -l /opt/demo #Verify the secret file
+kubectl exec -it secret-nautilus -c secret-container-nautilus -- cat /opt/demo/official.txt #Check the text
+```
