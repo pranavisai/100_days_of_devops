@@ -815,3 +815,20 @@ kubectl apply -f <your-file>.yaml
 kubectl get all -n iron-namespace-xfusion
 ```
 You should see 2 deployments, 2 pods, and 2 services.
+
+## Day 64: Fix Python App Deployed on Kubernetes Cluster
+1. Fix the image:
+   ```
+   kubectl edit deploy NAME-OF-DEPLOYMENT
+   poroko/flask-demo-app
+   ```
+2. Fix the target port:
+   ```
+   kubectl edit service NAME-OF-SERVICE
+   targetPort: 5000
+   ```
+3. Verify:
+   ```
+   kubectl get all
+   ```
+4. Click on the app above the terminal and verify.
